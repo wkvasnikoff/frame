@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<db>
+	<connection name="biggest">
+		<host>localhost</host>
+		<username>billk</username>
+		<password></password>
+		<dbname>test</dbname>
+	</connection>
+</db>

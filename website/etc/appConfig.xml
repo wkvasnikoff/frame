@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<app>
+	<global layout="">
+		<links>
+			<link rel="stylesheet" href="css/main.css" />
+		</links>
+		<scripts>
+			<script src="js/main.js"> </script>
+		</scripts>
+		<metatags>
+			<meta charset="UTF-8" />
+		</metatags>
+		<modules>
+		</modules>
+	</global>
+	<pages>
+		<page name="index" layout="main" title="test page">
+			<scripts />
+			<links />
+			<modules>
+				<module name="nav" action="head" view="head" container="left" />
+			</modules>
+		</page>
+	</pages>
+</app>
