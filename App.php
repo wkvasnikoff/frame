@@ -16,7 +16,7 @@ class App
 
     public function __construct($basePath)
     {
-        $this->file = "$basePath/website/etc/appConfig.xml";
+        $this->file = "$basePath/etc/appConfig.xml";
     }
 
     protected function loadAppConfig($request)

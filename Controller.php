@@ -7,7 +7,7 @@ abstract class Controller
 
     public function __construct()
     {
-        $this->view = new stdClass();
+        $this->view = new \stdClass();
     }
 
     public function __get($name)
