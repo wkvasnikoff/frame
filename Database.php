@@ -8,11 +8,17 @@ class Database
 
     public function __construct($db)
     {
-        $xml = simplexml_load_file('/var/www/test/etc/db.xml');
-        $dbinfo = $xml->xpath("db/connection[@name='" . $db . "']");
+        $path = __DIR__ . '/../etc/db.xml';
+        $xml = simplexml_load_file($path);
+        $dbinfo = $xml->xpath("connection[@name='" . $db . "']");
+
+        if (!$dbinfo) {
+            echo "unable to find database: '$db'\n";
+            exit;
+        }
         $dbinfo = $dbinfo[0];
 
-        $this->connection = new mysqli(
+        $this->connection = new \mysqli(
             $dbinfo->host,
             $dbinfo->username,
             $dbinfo->password,

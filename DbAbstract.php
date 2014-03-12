@@ -4,6 +4,7 @@ namespace frame;
 
 abstract class DbAbstract
 {
+    protected static $connection;
     protected static $tableName;
     protected static $keys;
 
@@ -33,7 +34,7 @@ abstract class DbAbstract
     public static function getByKey($keys)
     {
         if (!is_array($keys)) {
-            $keys = [keys];
+            $keys = [$keys];
         }
 
         $sql = sprintf('select * from %s where ', static::$tableName);
@@ -49,9 +50,9 @@ abstract class DbAbstract
         return false;
     }
 
-    public static function getByQuery($sql, array  $params = [])
+    public static function getByQuery($sql, array $params = [])
     {
-        $db = new Database('biggest');
+        $db = new Database(static::$connection);
         $rows = $db->query($sql, $params);
 
         $objs = [];
@@ -70,7 +71,7 @@ abstract class DbAbstract
 
     public function save()
     {
-        $db = new Database('biggest');
+        $db = new Database(static::$connection);
         $fields = [];
         $values = [];
 

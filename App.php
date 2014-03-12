@@ -102,7 +102,7 @@ class App
         foreach ($this->scripts as $script) {
             $attributes = $script->attributes();
             $src = $attributes['src'];
-            $layout->setContainerOutput('headLinks', $script->asXML(). "\n");
+            $layout->setContainerOutput('headScripts', $script->asXML(). "\n");
         }
 
         $layout->setContainerOutput('headTitle', "<title>{$this->title}</title>\n");
@@ -118,9 +118,13 @@ class App
             } else {
                 $view = $action;
             }
-            $container = (string)$attributes['container'];
+            if (isset($attributes['container'])) {
+                $container = (string)$attributes['container'];
+            } else {
+                $container = 'main';
+            }
 
-            require_once '../modules/' . $attributes['name'] . '/index.php';
+            require_once "../modules/{$attributes['name']}/index.php";
 
             $controller = new $controllerName();
             $controller->$actionMethod();
