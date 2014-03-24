@@ -35,8 +35,11 @@ class Database
         $sql = vsprintf($sql, $params);
         $result = $this->connection->query($sql);
 
-        if (!$select) {
+        if ($result === true) {
             return;
+        } elseif($result === false) {
+            echo $this->connection->error;
+            exit;
         }
 
         $rows = [];
@@ -49,5 +52,10 @@ class Database
         }
 
         return $rows;
+    }
+
+    public function insertId()
+    {
+        return $this->connection->insert_id;
     }
 }

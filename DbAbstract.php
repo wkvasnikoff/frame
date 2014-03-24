@@ -69,22 +69,22 @@ abstract class DbAbstract
         return $objs;
     }
 
-    public function save()
+    public function save($manualInsert = false, $fetchId = false)
     {
         $db = new Database(static::$connection);
         $fields = [];
         $values = [];
 
         # get relevant properties
-        $reflect = new ReflectionClass($this);
-        $props = $reflect->getProperties(ReflectionProperty::IS_PROTECTED);
+        $reflect = new \ReflectionClass($this);
+        $props = $reflect->getProperties(\ReflectionProperty::IS_PROTECTED);
 
         $nameValue = [];
         foreach ($props as $prop) {
             $name = $prop->name;
             if (preg_match('/^m_/', $name)) {
                 $shortName = substr($name, 2);
-                if (in_array($shortName, static::$keys)) {
+                if (in_array($shortName, static::$keys && !$manualInsert)) {
                     continue;
                 }
                 $fields[] = $shortName;
@@ -93,7 +93,8 @@ abstract class DbAbstract
         }
 
         # figure out if insert or update
-        $op = 'update';
+        $op = $manualInsert ? 'insert' : 'update';
+
         foreach (static::$keys as $key) {
             if (!$this->$key) {
                 $op = 'insert';
@@ -111,6 +112,12 @@ abstract class DbAbstract
             $sql = sprintf('insert into %s (%s) values (%s)', static::$tableName, $fields, $valueFieldPercents);
 
             $db->query($sql, $values, false);
+
+            if ($fetchId && !$manualInsert) {
+                $id = $db->insertId();
+                $key = static::$keys[0];
+                $this->$key = $id;
+            }
         } else {
             # Set Clause
             $setClause = [];
